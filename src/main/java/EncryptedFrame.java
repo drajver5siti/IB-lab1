@@ -1,20 +1,14 @@
 public class EncryptedFrame {
 
-    private final byte[] data;
-    private final byte[] HMAC;
+    public final byte[] frameHeader;
+    public final byte packageNumber;
+    public final byte[] data;
+    public final byte[] MIC;
 
-    public EncryptedFrame(byte[] data, byte[] HMAC) {
+    public EncryptedFrame(byte[] frameHeader, byte packageNumber, byte[] data, byte[] MIC) {
+        this.frameHeader = frameHeader;
+        this.packageNumber = packageNumber;
         this.data = data;
-        this.HMAC = HMAC;
-    }
-
-    public byte[] getData()
-    {
-        return this.data;
-    }
-
-    public byte[] getHMAC()
-    {
-        return this.HMAC;
+        this.MIC = MIC;
     }
 }

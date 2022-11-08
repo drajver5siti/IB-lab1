@@ -1,10 +1,6 @@
-import exceptions.HMACNotValidException;
-
 import javax.crypto.*;
-import java.nio.charset.StandardCharsets;
-import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
+import java.security.SecureRandom;
 
 public class AES {
     public static SecretKey generateKey()  {
@@ -16,18 +12,24 @@ public class AES {
             return null;
         }
     }
-//
-//    private static byte[] calculateHMAC(byte[] encryptedData, SecretKey key) {
+
+    public static byte[] generateIV()
+    {
+        return new byte[] { 0x66, 0x14, 0x4F, 0x01, 0x2C, 0x10, 0x51, 0x43, 0x55, 0x29, 0x15, 0x3A, 0x66, 0x68, 0x0B, 0x05 };
+
+//        SecureRandom random = null;
+//        byte[] iv = new byte[0];
 //        try {
-//            Mac mac = Mac.getInstance("HmacSHA256");
-//            mac.init(key);
-//            return mac.doFinal(encryptedData);
-//        } catch (Exception e) {
-//            System.out.println("Error while calculating MAC: " + e);
-//            return null;
+//            random = SecureRandom.getInstanceStrong();
+//            iv = new byte[Cipher.getInstance("AES/ECB/NoPadding").getBlockSize()];
+//            random.nextBytes(iv);
+//        } catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
+//            e.printStackTrace();
 //        }
-//    }
 //
+//        return iv;
+    }
+
     public static byte[] encrypt(byte[] toEncrypt, SecretKey key) {
         try {
             Cipher cipher = Cipher.getInstance("AES/ECB/NoPadding");
@@ -52,28 +54,5 @@ public class AES {
             return null;
         }
     }
-//
-//    public static EncryptedFrame encryptMessage(ClearTextFrame toEncrypt, SecretKey key)
-//    {
-//        byte[] encrypted = AES.encrypt(toEncrypt.getData(), key);
-//        byte[] HMAC = AES.calculateHMAC(encrypted, key);
-//
-//        return new EncryptedFrame(
-//                encrypted,
-//                HMAC
-//        );
-//    }
-//
-//    public static ClearTextFrame decryptMessage(EncryptedFrame toDecrypt, SecretKey key) throws HMACNotValidException {
-//        byte[] HMAC = AES.calculateHMAC(toDecrypt.getData(), key);
-////        byte[] wrongHMAC = AES.calculateHMAC("Test".getBytes(StandardCharsets.UTF_8), key);
-//        if(!Arrays.equals(HMAC, toDecrypt.getHMAC())) {
-//            throw new HMACNotValidException();
-//        }
-//
-//        return new ClearTextFrame(
-//                AES.decrypt(toDecrypt.getData(), key)
-//        );
-//    }
 
 }
