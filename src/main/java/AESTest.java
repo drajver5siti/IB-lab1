@@ -6,26 +6,16 @@ import java.nio.charset.StandardCharsets;
 public class AESTest {
     public static void main(String[] args) {
         SecretKey key = AES.generateKey();
-        String messageToSend = "Hello World!";
+        CCMP alice = new CCMP(key);
+        CCMP bob   = new CCMP(key);
 
-        ClearTextFrame frameToEncrypt = new ClearTextFrame(
-                messageToSend.getBytes(StandardCharsets.UTF_8)
-        );
+        byte[] frameHeader = new byte[0];
+        byte packageNumber = 0;
+        byte[] data = "HelloWorldHello123".getBytes();
+        // Hello1234 = 18 bytes
+        ClearTextFrame ctFrame = new ClearTextFrame(frameHeader, packageNumber, data);
 
-        System.out.println("Original string: " + messageToSend);
-        EncryptedFrame encryptedFrame = AES.encryptMessage(frameToEncrypt, key);
+        alice.sendMessage(ctFrame);
 
-        StringBuilder encryptedString = new StringBuilder();
-        for(byte b : encryptedFrame.getData()) {
-            encryptedString.append(String.format("%02X ", b));
-        }
-        System.out.println("Encrypted string: " + encryptedString.toString());
-
-        try {
-            ClearTextFrame decryptedFrame = AES.decryptMessage(encryptedFrame, key);
-            System.out.println("Decrypted string: " + new String(decryptedFrame.getData()));
-        } catch (HMACNotValidException e) {
-            System.out.println("Invalid HMAC !");
-        }
     }
 }

@@ -1,13 +1,12 @@
 public class ClearTextFrame {
 
-    private final byte[] data;
+    public final byte[] frameHeader;
+    public final byte packageNumber;
+    public final byte[] data;
 
-    public ClearTextFrame(byte[] data) {
+    public ClearTextFrame(byte[] frameHeader, byte packageNumber, byte[] data) {
+        this.frameHeader = frameHeader;
+        this.packageNumber = packageNumber;
         this.data = data;
-    }
-
-    public byte[] getData()
-    {
-        return this.data;
     }
 }
